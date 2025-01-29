@@ -1,5 +1,7 @@
 package neilt.mobile.rsa
 
+import java.math.BigInteger
+
 // Generates RSA keys
 object RSAKeyGenerator {
 
@@ -11,7 +13,7 @@ object RSAKeyGenerator {
      *         - e: The public exponent.
      *         - d: The private exponent.
      */
-    fun generateShortRSAKey(): Triple<Long, Long, Long> {
+    fun generateShortRSAKey(): Triple<BigInteger, BigInteger, BigInteger> {
         // Generate two prime numbers
         val p = PrimeGenerator.generatePrime(PRIME_BIT_LENGTH)
         val q = PrimeGenerator.generatePrime(PRIME_BIT_LENGTH)
@@ -20,13 +22,13 @@ object RSAKeyGenerator {
         val n = p * q
 
         // Compute Euler's totient function φ(n)
-        val phi = (p - 1) * (q - 1)
+        val phi = (p - BigInteger.ONE) * (q - BigInteger.ONE)
 
         // Use the default public exponent
-        val e = DEFAULT_PUBLIC_EXPONENT
+        val e = BigInteger(DEFAULT_PUBLIC_EXPONENT)
 
         // Ensure e and φ(n) are coprime
-        if (MathUtils.gcd(e, phi) != 1L) {
+        if (MathUtils.gcd(e, phi) != BigInteger.ONE) {
             throw IllegalStateException("e and φ(n) are not coprime. Try again.")
         }
 
